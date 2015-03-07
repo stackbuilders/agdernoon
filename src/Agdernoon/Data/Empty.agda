@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
+-- The Agdernoon library
 --
---
---
+-- Empty type
 ------------------------------------------------------------------------
 
 module Agdernoon.Data.Empty where
@@ -10,3 +10,9 @@ module Agdernoon.Data.Empty where
 --
 
 data ⊥ : Set where
+
+------------------------------------------------------------------------
+--
+
+⊥-elim : {Whatever : Set} → ⊥ → Whatever
+⊥-elim ()

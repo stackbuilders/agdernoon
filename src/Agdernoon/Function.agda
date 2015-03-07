@@ -1,18 +1,21 @@
 ------------------------------------------------------------------------
 -- The Agdernoon library
 --
--- Lists
+--
 ------------------------------------------------------------------------
 
-module Agdernoon.Data.List where
+module Agdernoon.Function where
 
-import Data.List
-
-infixr 5 _∷_
+infixr 9 _∘_
 
 ------------------------------------------------------------------------
 --
 
-data List (A : Set) : Set where
-  []  : List A
-  _∷_ : (x : A) (xs : List A) → List A
+id : {A : Set} → A → A
+id x = x
+
+------------------------------------------------------------------------
+--
+
+_∘_ : {A B C : Set} → (B → C) → (A → B) → A → C
+g ∘ f = λ x → g (f x)
