@@ -1,5 +1,17 @@
 # Agdernoon
 
+TODO
+
+- Tested with Agda 2.4.2.2 and the Agda standard library 0.9.
+
+## The Agdernoon library
+
+TODO
+
+## The Agdernoon exercises
+
+TODO
+
 ## References
 
 - The Agda team (2015). The [Agda wiki][agda].
