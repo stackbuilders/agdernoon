@@ -1,12 +1,13 @@
 ------------------------------------------------------------------------
--- The Agdernoon library
+-- The Agdernoon library and exercises
 --
 --
 ------------------------------------------------------------------------
 
 module Agdernoon where
 
--- Tested with Agda 2.4.2.2.
+------------------------------------------------------------------------
+-- The Agdernoon library
 
 import Agdernoon.Data.Bool
 import Agdernoon.Data.Empty
@@ -18,3 +19,10 @@ import Agdernoon.Data.Sum
 import Agdernoon.Data.Unit
 import Agdernoon.Data.Vec
 import Agdernoon.Function
+
+------------------------------------------------------------------------
+-- The Agdernoon exercises
+
+import Agdernoon.Exercise.List
+import Agdernoon.Exercise.Sum
+import Agdernoon.Exercise.Vec
