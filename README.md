@@ -12,7 +12,13 @@ library.
 
 ## The Agdernoon exercises
 
-TODO
+- *Sums*.
+
+- *Lists*.
+
+- *Vectors*.
+
+- *Sublists* (Norell 2009, Exercise 2.3).
 
 ## References
 
