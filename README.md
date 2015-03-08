@@ -1,12 +1,14 @@
 # Agdernoon
 
-TODO
+An *Agdernoon* is an afternoon of Agda at
+[Stack Builders][stackbuilders].
 
 - Tested with Agda 2.4.2.2 and the Agda standard library 0.9.
 
 ## The Agdernoon library
 
-TODO
+The Agdernoon library is a simplified version of the Agda standard
+library.
 
 ## The Agdernoon exercises
 
@@ -31,3 +33,4 @@ TODO
   Languages (CB0683). EAFIT.
 
 [agda]: http://wiki.portal.chalmers.se/agda/pmwiki.php
+[stackbuilders]: http://www.stackbuilders.com/
