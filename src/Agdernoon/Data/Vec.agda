@@ -16,3 +16,9 @@ infixr 5 _∷_
 data Vec (A : Set) : ℕ → Set where
   []  : Vec A zero
   _∷_ : ∀ {n} (x : A) (xs : Vec A n) → Vec A (suc n)
+
+------------------------------------------------------------------------
+-- Some operations
+
+head : ∀ {A n} → Vec A (suc n) → A
+head (x ∷ _) = x
