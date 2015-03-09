@@ -74,3 +74,22 @@ filter _ []       = []
 filter p (x ∷ xs) with p x
 ... | true  = x ∷ filter p xs
 ... | false =     filter p xs
+
+------------------------------------------------------------------------
+--
+
+infix  4 _∈_
+
+data _∈_ {A : Set} : A → List A → Set where
+  here  : ∀ {x xs} → x ∈ x ∷ xs
+  there : ∀ {x y xs} → x ∈ xs → x ∈ y ∷ xs
+
+------------------------------------------------------------------------
+--
+
+infix  4 _⊆_
+
+data _⊆_ {A : Set} : List A → List A → Set where
+  stop : [] ⊆ []
+  drop : ∀ {x xs ys} → xs ⊆ ys → xs ⊆ x ∷ ys
+  keep : ∀ {x xs ys} → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
