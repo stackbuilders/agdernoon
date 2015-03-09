@@ -75,6 +75,12 @@ filter p (x ∷ xs) with p x
 ... | true  = x ∷ filter p xs
 ... | false =     filter p xs
 
+partition : ∀ {A} → (A → Bool) → List A → List A × List A
+partition p []       = [] , []
+partition p (x ∷ xs) with p x | partition p xs
+... | true  | ys , zs = x ∷ ys , zs
+... | false | ys , zs = ys , x ∷ zs
+
 ------------------------------------------------------------------------
 --
 
