@@ -35,6 +35,12 @@ _∨_ = {!!}
 
 import Agdernoon.Exercise.Bool
 
+infix  0 if_then_else
+
+if_then_else : {A : Set} → Bool → A → A → A
+if false then _ else f = f
+if true  then t else _ = t
+
 ------------------------------------------------------------------------
 -- Natural numbers
 ------------------------------------------------------------------------
@@ -164,3 +170,21 @@ module Vector where
 
   tail : ∀ {A n} → Vec A (suc n) → Vec A n
   tail xs = {!!}
+
+  vmap : ∀ {A B n} → (A → B) → Vec A n → Vec B n
+  vmap _ []       = []
+  vmap f (x ∷ xs) = f x ∷ vmap f xs
+
+  -- (Norell 2009, p. 236)
+
+  data Vec₂ (A : Set) : ℕ → Set where
+    nil  : Vec₂ A zero
+    cons : (n : ℕ) → A → Vec₂ A n → Vec₂ A (suc n)
+
+  vmap₂ : ∀ {A B} (n : ℕ) → (A → B) → Vec₂ A n → Vec₂ B n
+  vmap₂ .zero    _ nil           = nil
+  vmap₂ .(suc n) f (cons n x xs) = cons n (f x) (vmap₂ n f xs)
+
+  vmap₃ : ∀ {A B} (n : ℕ) → (A → B) → Vec₂ A n → Vec₂ B n
+  vmap₃ zero    _ nil            = nil
+  vmap₃ (suc n) f (cons .n x xs) = cons n (f x) (vmap₃ n f xs)
