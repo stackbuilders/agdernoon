@@ -7,6 +7,14 @@
 module Agdernoon.Session.Agdernoon-20150312 where
 
 ------------------------------------------------------------------------
+-- Agda
+------------------------------------------------------------------------
+
+-- Agda is a dependently typed functional programming language.
+
+-- Agda is a proof assistant.
+
+------------------------------------------------------------------------
 -- Booleans
 ------------------------------------------------------------------------
 
@@ -26,7 +34,29 @@ _∧_ : Bool → Bool → Bool
 false ∧ _ = false
 true  ∧ b = b
 
--- C-u C-x =
+-- Some key bindings
+
+-- C-c C-a         auto
+-- C-c C-b         previous goal
+-- C-c C-c         make case
+-- C-c C-d         infer type maybe toplevel
+-- C-c C-e         show context
+-- C-c C-f         next goal
+-- C-c C-h         helper function type
+-- C-c C-l         load
+-- C-c C-n         compute normalise value maybe toplevel
+-- C-c C-r         refine
+-- C-c C-t         goal type
+-- C-c C-w         why in scope maybe toplevel
+
+-- C-u C-x =       α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+
+-- C-c C-x C-d     remove annotations
+-- C-c C-x C-q     quit
+-- C-c C-x C-r     restart
+
+-- M-*             go back
+-- M-.             go to definition
 
 -- Exercise. Define the _∨_ function:
 
@@ -68,6 +98,20 @@ _*_ : ℕ → ℕ → ℕ
 m * n = {!!}
 
 import Agdernoon.Exercise.Nat
+
+------------------------------------------------------------------------
+-- System T (Bove and Dybjer 2009, § 2.5)
+------------------------------------------------------------------------
+
+natrec : {C : Set} → C → (ℕ → C → C) → ℕ → C
+natrec p h zero    = p
+natrec p h (suc n) = h n (natrec p h n)
+
+plus : ℕ → ℕ → ℕ
+plus n m = natrec m (λ x y → suc y) n
+
+mult : ℕ → ℕ → ℕ
+mult n m = natrec zero (λ x y → plus y m) n
 
 ------------------------------------------------------------------------
 -- Lists
