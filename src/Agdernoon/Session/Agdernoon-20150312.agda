@@ -14,13 +14,16 @@ module Agdernoon.Session.Agdernoon-20150312 where
 
 -- Agda is a proof assistant.
 
+-- http://wiki.portal.chalmers.se/agda/pmwiki.php
+
 ------------------------------------------------------------------------
 -- Booleans
 ------------------------------------------------------------------------
 
-module Bool where
+import Agdernoon.Data.Bool
+import Agdernoon.Exercise.Bool
 
-  import Agdernoon.Data.Bool
+module Bool where
 
   data Bool : Set where
     false : Bool
@@ -36,36 +39,35 @@ module Bool where
   false ∧ _ = false
   true  ∧ b = b
 
--- Some key bindings
+  -- Some key bindings
 
--- C-c C-a         auto
--- C-c C-b         previous goal
--- C-c C-c         make case
--- C-c C-d         infer type maybe toplevel
--- C-c C-e         show context
--- C-c C-f         next goal
--- C-c C-h         helper function type
--- C-c C-l         load
--- C-c C-n         compute normalise value maybe toplevel
--- C-c C-r         refine
--- C-c C-t         goal type
--- C-c C-w         why in scope maybe toplevel
+  -- C-c C-a         auto
+  -- C-c C-b         previous goal
+  -- C-c C-c         make case
+  -- C-c C-d         infer type
+  -- C-c C-e         show context
+  -- C-c C-f         next goal
+  -- C-c C-h         helper function type
+  -- C-c C-l         load
+  -- C-c C-n         compute normalise value
+  -- C-c C-r         refine
+  -- C-c C-t         goal type
+  -- C-c C-w         why in scope
 
--- C-u C-x =       α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+  -- C-u C-x =       how to input
+  --                 α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
 
--- C-c C-x C-d     remove annotations
--- C-c C-x C-q     quit
--- C-c C-x C-r     restart
+  -- C-c C-x C-d     remove annotations
+  -- C-c C-x C-q     quit
+  -- C-c C-x C-r     restart
 
--- M-*             go back
--- M-.             go to definition
+  -- M-*             go back
+  -- M-.             go to definition
 
   -- Exercise. Define the _∨_ function:
 
   _∨_ : Bool → Bool → Bool
   _∨_ = {!!}
-
-  import Agdernoon.Exercise.Bool
 
   infix  0 if_then_else
 
@@ -78,50 +80,56 @@ module Bool where
 ------------------------------------------------------------------------
 
 import Agdernoon.Data.Nat
-
-data ℕ : Set where
-  zero : ℕ
-  suc  : ℕ → ℕ
-
-pred : ℕ → ℕ
-pred zero    = zero
-pred (suc n) = n
-
-infixl 7 _*_
-infixl 6 _+_
-
-_+_ : ℕ → ℕ → ℕ
-zero  + n = n
-suc m + n = suc (m + n)
-
--- Exercise. Define the _*_ function:
-
-_*_ : ℕ → ℕ → ℕ
-m * n = {!!}
-
 import Agdernoon.Exercise.Nat
+
+module Nat where
+
+  data ℕ : Set where
+    zero : ℕ
+    suc  : ℕ → ℕ
+
+  pred : ℕ → ℕ
+  pred zero    = zero
+  pred (suc n) = n
+
+  infixl 7 _*_
+  infixl 6 _+_
+
+  _+_ : ℕ → ℕ → ℕ
+  zero  + n = n
+  suc m + n = suc (m + n)
+
+  -- Exercise. Define the _*_ function:
+
+  _*_ : ℕ → ℕ → ℕ
+  m * n = {!!}
 
 ------------------------------------------------------------------------
 -- System T (Bove and Dybjer 2009, § 2.5)
 ------------------------------------------------------------------------
 
-natrec : {C : Set} → C → (ℕ → C → C) → ℕ → C
-natrec p h zero    = p
-natrec p h (suc n) = h n (natrec p h n)
+module SystemT where
 
-plus : ℕ → ℕ → ℕ
-plus n m = natrec m (λ x y → suc y) n
+  open Nat
 
-mult : ℕ → ℕ → ℕ
-mult n m = natrec zero (λ x y → plus y m) n
+  natrec : {C : Set} → C → (ℕ → C → C) → ℕ → C
+  natrec p h zero    = p
+  natrec p h (suc n) = h n (natrec p h n)
+
+  plus : ℕ → ℕ → ℕ
+  plus n m = natrec m (λ x y → suc y) n
+
+  mult : ℕ → ℕ → ℕ
+  mult n m = natrec zero (λ x y → plus y m) n
 
 ------------------------------------------------------------------------
 -- Lists
 ------------------------------------------------------------------------
 
-module List where
+import Agdernoon.Data.List
+import Agdernoon.Exercise.List
 
-  import Agdernoon.Data.List
+module List where
 
   infixr 5 _∷_ _++_
 
@@ -152,15 +160,13 @@ module List where
   filter : ∀ {A} → (A → Bool) → List A → List A
   filter = {!!}
 
-  -- import Agdernoon.Exercise.List
-
 ------------------------------------------------------------------------
 -- Products
 ------------------------------------------------------------------------
 
-module Product where
+import Agdernoon.Data.Product
 
-  import Agdernoon.Data.Product
+module Product where
 
   infixr 4 _,_
   infixr 2 _×_
@@ -193,6 +199,7 @@ module Product where
 ------------------------------------------------------------------------
 
 import Agdernoon.Data.Sum
+import Agdernoon.Exercise.Sum
 
 module Sum where
 
@@ -211,9 +218,12 @@ module Sum where
 -- Vectors
 ------------------------------------------------------------------------
 
+import Agdernoon.Data.Vec
+import Agdernoon.Exercise.Vec
+
 module Vec where
 
-  import Agdernoon.Data.Vec
+  open Nat
 
   infixr 5 _∷_
 
@@ -248,16 +258,18 @@ module Vec where
   map₃ (suc n) f (cons .n x xs) = cons n (f x) (map₃ n f xs)
 
 ------------------------------------------------------------------------
--- (Sicard-Ramírez 2011)
+-- Propositions as types (Sicard-Ramírez 2011)
 ------------------------------------------------------------------------
 
-module Sd where
+module PropositionsAsTypes where
 
---  infix  6 ¬_
+  ----------------------------------------------------------------------
+  -- Propositional logic
+
+  -- Conjunction: Product
+
   infixr 6 _,_
   infixr 5 _∧_
-  infixr 4 _∨_
---  infixr 2 _↔_
 
   data _∧_ (A B : Set) : Set where
     _,_ : A → B → A ∧ B
@@ -268,6 +280,10 @@ module Sd where
   ∧-proj₂ : ∀ {A B} → A ∧ B → B
   ∧-proj₂ (a , b) = b
 
+  -- Disjunction: Sum
+
+  infixr 4 _∨_
+
   data _∨_ (A B : Set) : Set where
     inj₁ : A → A ∨ B
     inj₂ : B → A ∨ B
@@ -276,28 +292,45 @@ module Sd where
   [_,_] f g (inj₁ a) = f a
   [_,_] f g (inj₂ b) = g b
 
+  -- False: Empty
+
   data ⊥ : Set where
 
   ⊥-elim : {A : Set} → ⊥ → A
   ⊥-elim ()
 
+  -- True: Unit
+
   data ⊤ : Set where
     tt : ⊤
+
+  -- Implication
 
   data _↝_ (A B : Set) : Set where
     fun : (A → B) → A ↝ B
 
-  ap : ∀ {A B} → A → (A ↝ B) → B
-  ap a (fun f) = f a
+  apply : ∀ {A B} → A → (A ↝ B) → B
+  apply a (fun f) = f a
+
+  -- Negation
+
+  infix  6 ¬_
 
   ¬_ : Set → Set
   ¬ A = A → ⊥
+
+  infixr 2 _↔_
 
   _↔_ : Set → Set → Set
   A ↔ B = A → B ∧ B → A
 
   a→¬¬a : ∀ {A} → A → ¬ ¬ A
   a→¬¬a a ¬a = ¬a a
+
+  ----------------------------------------------------------------------
+  -- Predicate logic
+
+  -- Existential quantifier
 
   data ∃ (A : Set) (B : A → Set) : Set where
     _,_ : (witness : A) → B witness → ∃ A B
@@ -307,3 +340,18 @@ module Sd where
 
   ∃-proj₂ : ∀ {A B} (p : ∃ A B) → B (∃-proj₁ p)
   ∃-proj₂ (witness , x) = x
+
+  -- Universal quantifier
+
+  data Forall (A : Set) (B : A → Set) : Set where
+    dfun : ((a : A) → B a) → Forall A B
+
+  dapply : ∀ {A B} → Forall A B → (a : A) → B a
+  dapply (dfun f) a = f a
+
+  ----------------------------------------------------------------------
+  -- Equality
+
+  data _≡_ {A : Set} : A → A → Set where
+    refl : (a : A) → a ≡ a
+
