@@ -104,6 +104,24 @@ module Nat where
   _*_ : ℕ → ℕ → ℕ
   m * n = {!!}
 
+  open Bool
+
+  mutual
+
+    even : ℕ → Bool
+    even zero    = true
+    even (suc n) = odd n
+
+    odd : ℕ → Bool
+    odd zero    = false
+    odd (suc n) = even n
+
+even-zero = Nat.even Nat.zero
+even-one  = Nat.even (Nat.suc Nat.zero)
+
+odd-zero = Nat.odd Nat.zero
+odd-one  = Nat.odd (Nat.suc Nat.zero)
+
 ------------------------------------------------------------------------
 -- System T (Bove and Dybjer 2009, § 2.5)
 ------------------------------------------------------------------------
