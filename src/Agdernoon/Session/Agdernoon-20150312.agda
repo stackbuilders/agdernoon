@@ -18,21 +18,23 @@ module Agdernoon.Session.Agdernoon-20150312 where
 -- Booleans
 ------------------------------------------------------------------------
 
-import Agdernoon.Data.Bool
+module Bool where
 
-data Bool : Set where
-  false : Bool
-  true  : Bool
+  import Agdernoon.Data.Bool
 
-not : Bool → Bool
-not = {!!}
+  data Bool : Set where
+    false : Bool
+    true  : Bool
 
-infixr 6 _∧_
-infixr 5 _∨_
+  not : Bool → Bool
+  not = {!!}
 
-_∧_ : Bool → Bool → Bool
-false ∧ _ = false
-true  ∧ b = b
+  infixr 6 _∧_
+  infixr 5 _∨_
+
+  _∧_ : Bool → Bool → Bool
+  false ∧ _ = false
+  true  ∧ b = b
 
 -- Some key bindings
 
@@ -58,18 +60,18 @@ true  ∧ b = b
 -- M-*             go back
 -- M-.             go to definition
 
--- Exercise. Define the _∨_ function:
+  -- Exercise. Define the _∨_ function:
 
-_∨_ : Bool → Bool → Bool
-_∨_ = {!!}
+  _∨_ : Bool → Bool → Bool
+  _∨_ = {!!}
 
-import Agdernoon.Exercise.Bool
+  import Agdernoon.Exercise.Bool
 
-infix  0 if_then_else
+  infix  0 if_then_else
 
-if_then_else : {A : Set} → Bool → A → A → A
-if false then _ else f = f
-if true  then t else _ = t
+  if_then_else : {A : Set} → Bool → A → A → A
+  if false then _ else f = f
+  if true  then t else _ = t
 
 ------------------------------------------------------------------------
 -- Natural numbers
@@ -117,64 +119,74 @@ mult n m = natrec zero (λ x y → plus y m) n
 -- Lists
 ------------------------------------------------------------------------
 
-import Agdernoon.Data.List
+module List where
 
-infixr 5 _∷_ _++_
+  import Agdernoon.Data.List
 
-data List (A : Set) : Set where
-  []  : List A
-  _∷_ : (x : A) (xs : List A) → List A
+  infixr 5 _∷_ _++_
 
-_++_ : ∀ {A} → List A → List A → List A
-[]       ++ ys = ys
-(x ∷ xs) ++ ys = x ∷ xs ++ ys
+  data List (A : Set) : Set where
+    []  : List A
+    _∷_ : (x : A) (xs : List A) → List A
 
-map : ∀ {A B} → (A → B) → List A → List B
-map _ []       = []
-map f (x ∷ xs) = f x ∷ map f xs
+  _++_ : ∀ {A} → List A → List A → List A
+  []       ++ ys = ys
+  (x ∷ xs) ++ ys = x ∷ xs ++ ys
 
-foldr : {A B : Set} → (A → B → B) → B → List A → B
-foldr _ n []       = n
-foldr c n (x ∷ xs) = c x (foldr c n xs)
+  map : ∀ {A B} → (A → B) → List A → List B
+  map _ []       = []
+  map f (x ∷ xs) = f x ∷ map f xs
 
-foldl : {A B : Set} → (A → B → A) → A → List B → A
-foldl _ n []       = n
-foldl c n (x ∷ xs) = foldl c (c n x) xs
+  foldr : {A B : Set} → (A → B → B) → B → List A → B
+  foldr _ n []       = n
+  foldr c n (x ∷ xs) = c x (foldr c n xs)
 
--- Exercise. Define the filter function:
+  foldl : {A B : Set} → (A → B → A) → A → List B → A
+  foldl _ n []       = n
+  foldl c n (x ∷ xs) = foldl c (c n x) xs
 
-filter : ∀ {A} → (A → Bool) → List A → List A
-filter = {!!}
+  -- Exercise. Define the filter function:
 
--- import Agdernoon.Exercise.List
+  open Bool
+
+  filter : ∀ {A} → (A → Bool) → List A → List A
+  filter = {!!}
+
+  -- import Agdernoon.Exercise.List
 
 ------------------------------------------------------------------------
 -- Products
 ------------------------------------------------------------------------
 
-import Agdernoon.Data.Product
+module Product where
 
-infixr 4 _,_
-infixr 2 _×_
+  import Agdernoon.Data.Product
 
-data _×_ (A B : Set) : Set where
-  _,_ : (x : A) (y : B) → A × B
+  infixr 4 _,_
+  infixr 2 _×_
 
-proj₁ : ∀ {A B} → A × B → A
-proj₁ (x , _) = x
+  data _×_ (A B : Set) : Set where
+    _,_ : (x : A) (y : B) → A × B
 
-proj₂ : ∀ {A B} → A × B → B
-proj₂ (_ , y) = y
+  proj₁ : ∀ {A B} → A × B → A
+  proj₁ (x , _) = x
 
-zip : ∀ {A B} → List A → List B → List (A × B)
-zip (x ∷ xs) (y ∷ ys) = (x , y) ∷ zip xs ys
-zip _        _        = []
+  proj₂ : ∀ {A B} → A × B → B
+  proj₂ (_ , y) = y
 
-partition : ∀ {A} → (A → Bool) → List A → List A × List A
-partition _ []       = [] , []
-partition p (x ∷ xs) with p x | partition p xs
-... | false | ys , zs = ys , x ∷ zs
-... | true  | ys , zs = x ∷ ys , zs
+  open List
+
+  zip : ∀ {A B} → List A → List B → List (A × B)
+  zip (x ∷ xs) (y ∷ ys) = (x , y) ∷ zip xs ys
+  zip _        _        = []
+
+  open Bool
+
+  partition : ∀ {A} → (A → Bool) → List A → List A × List A
+  partition _ []       = [] , []
+  partition p (x ∷ xs) with p x | partition p xs
+  ... | false | ys , zs = ys , x ∷ zs
+  ... | true  | ys , zs = x ∷ ys , zs
 
 ------------------------------------------------------------------------
 -- Sums
@@ -182,24 +194,26 @@ partition p (x ∷ xs) with p x | partition p xs
 
 import Agdernoon.Data.Sum
 
-infixr 1 _⊎_
+module Sum where
 
-data _⊎_ (A B : Set) : Set where
-  inj₁ : (x : A) → A ⊎ B
-  inj₂ : (y : B) → A ⊎ B
+  infixr 1 _⊎_
 
--- Exercise. Define the [_,_] function:
+  data _⊎_ (A B : Set) : Set where
+    inj₁ : (x : A) → A ⊎ B
+    inj₂ : (y : B) → A ⊎ B
 
-[_,_] : {A B C : Set} → (A → C) → (B → C) → A ⊎ B → C
-[_,_] = {!!}
+  -- Exercise. Define the [_,_] function:
+
+  [_,_] : {A B C : Set} → (A → C) → (B → C) → A ⊎ B → C
+  [_,_] = {!!}
 
 ------------------------------------------------------------------------
 -- Vectors
 ------------------------------------------------------------------------
 
-import Agdernoon.Data.Vec
+module Vec where
 
-module Vector where
+  import Agdernoon.Data.Vec
 
   infixr 5 _∷_
 
@@ -215,9 +229,9 @@ module Vector where
   tail : ∀ {A n} → Vec A (suc n) → Vec A n
   tail xs = {!!}
 
-  vmap : ∀ {A B n} → (A → B) → Vec A n → Vec B n
-  vmap _ []       = []
-  vmap f (x ∷ xs) = f x ∷ vmap f xs
+  map : ∀ {A B n} → (A → B) → Vec A n → Vec B n
+  map _ []       = []
+  map f (x ∷ xs) = f x ∷ map f xs
 
   -- (Norell 2009, p. 236)
 
@@ -225,10 +239,71 @@ module Vector where
     nil  : Vec₂ A zero
     cons : (n : ℕ) → A → Vec₂ A n → Vec₂ A (suc n)
 
-  vmap₂ : ∀ {A B} (n : ℕ) → (A → B) → Vec₂ A n → Vec₂ B n
-  vmap₂ .zero    _ nil           = nil
-  vmap₂ .(suc n) f (cons n x xs) = cons n (f x) (vmap₂ n f xs)
+  map₂ : ∀ {A B} (n : ℕ) → (A → B) → Vec₂ A n → Vec₂ B n
+  map₂ .zero    _ nil           = nil
+  map₂ .(suc n) f (cons n x xs) = cons n (f x) (map₂ n f xs)
 
-  vmap₃ : ∀ {A B} (n : ℕ) → (A → B) → Vec₂ A n → Vec₂ B n
-  vmap₃ zero    _ nil            = nil
-  vmap₃ (suc n) f (cons .n x xs) = cons n (f x) (vmap₃ n f xs)
+  map₃ : ∀ {A B} (n : ℕ) → (A → B) → Vec₂ A n → Vec₂ B n
+  map₃ zero    _ nil            = nil
+  map₃ (suc n) f (cons .n x xs) = cons n (f x) (map₃ n f xs)
+
+------------------------------------------------------------------------
+-- (Sicard-Ramírez 2011)
+------------------------------------------------------------------------
+
+module Sd where
+
+--  infix  6 ¬_
+  infixr 6 _,_
+  infixr 5 _∧_
+  infixr 4 _∨_
+--  infixr 2 _↔_
+
+  data _∧_ (A B : Set) : Set where
+    _,_ : A → B → A ∧ B
+
+  ∧-proj₁ : ∀ {A B} → A ∧ B → A
+  ∧-proj₁ (a , b) = a
+
+  ∧-proj₂ : ∀ {A B} → A ∧ B → B
+  ∧-proj₂ (a , b) = b
+
+  data _∨_ (A B : Set) : Set where
+    inj₁ : A → A ∨ B
+    inj₂ : B → A ∨ B
+
+  [_,_] : {A B C : Set} → (A → C) → (B → C) → A ∨ B → C
+  [_,_] f g (inj₁ a) = f a
+  [_,_] f g (inj₂ b) = g b
+
+  data ⊥ : Set where
+
+  ⊥-elim : {A : Set} → ⊥ → A
+  ⊥-elim ()
+
+  data ⊤ : Set where
+    tt : ⊤
+
+  data _↝_ (A B : Set) : Set where
+    fun : (A → B) → A ↝ B
+
+  ap : ∀ {A B} → A → (A ↝ B) → B
+  ap a (fun f) = f a
+
+  ¬_ : Set → Set
+  ¬ A = A → ⊥
+
+  _↔_ : Set → Set → Set
+  A ↔ B = A → B ∧ B → A
+
+  a→¬¬a : ∀ {A} → A → ¬ ¬ A
+  a→¬¬a a ¬a = ¬a a
+
+  data ∃ (A : Set) (B : A → Set) : Set where
+    _,_ : (witness : A) → B witness → ∃ A B
+
+  ∃-proj₁ : ∀ {A B} → ∃ A B → A
+  ∃-proj₁ (witness , _) = witness
+
+  ∃-proj₂ : ∀ {A B} (p : ∃ A B) → B (∃-proj₁ p)
+  ∃-proj₂ (witness , x) = x
