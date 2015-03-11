@@ -276,6 +276,67 @@ module Vec where
   map₃ (suc n) f (cons .n x xs) = cons n (f x) (map₃ n f xs)
 
 ------------------------------------------------------------------------
+-- (Norell 2009, § 2.6)
+------------------------------------------------------------------------
+
+import Agdernoon.Data.List
+-- import Agdernoon.Exercise.Sublist
+
+module Sublist where
+
+  open import Agdernoon.Data.Bool
+  open import Agdernoon.Data.List using (List; []; _∷_; filter)
+
+  open Nat
+
+  open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+
+  data _≢_ : ℕ → ℕ → Set where
+    z≢s : ∀ {n} → zero ≢ suc n
+    s≢z : ∀ {n} → suc n ≢ zero
+    s≢s : ∀ {m n} → m ≢ n → suc m ≢ suc n
+
+  data Equal? (m n : ℕ) : Set where
+    eq  : m ≡ n → Equal? m n
+    neq : m ≢ n → Equal? m n
+
+  equal? : (m n : ℕ) → Equal? m n
+  equal? zero    zero    = eq refl
+  equal? zero    (suc n) = neq z≢s
+  equal? (suc m) zero    = neq s≢z
+  equal? (suc m) (suc n) with equal? m n
+  equal? (suc m) (suc .m) | eq refl = eq refl
+  equal? (suc m) (suc n)  | neq m≢n = neq (s≢s m≢n)
+
+  infix  4 _⊆_
+
+  data _⊆_ {A : Set} : List A → List A → Set where
+    stop : [] ⊆ []
+    drop : ∀ {x xs ys} → xs ⊆ ys → xs ⊆ x ∷ ys
+    keep : ∀ {x xs ys} → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
+
+  lem-filter : ∀ {A} (p : A → Bool) (xs : List A) → filter p xs ⊆ xs
+  lem-filter p []       = stop
+  lem-filter p (x ∷ xs) with p x
+  ... | true  = keep (lem-filter p xs)
+  ... | false = drop (lem-filter p xs)
+
+  lem-plus-zero : (n : ℕ) → n + zero ≡ n
+  lem-plus-zero zero    = refl
+  lem-plus-zero (suc n) with n + zero | lem-plus-zero n
+  ... | .n | refl = refl
+
+  -- Exercise. Prove the reflexivity of _⊆_:
+
+  ⊆-refl : ∀ {A} {xs : List A} → xs ⊆ xs
+  ⊆-refl {xs = xs} = {!!}
+
+  -- Exercise. Prove the transitivity of _⊆_:
+
+  ⊆-trans : ∀ {A} {xs ys zs : List A} → xs ⊆ ys → ys ⊆ zs → xs ⊆ zs
+  ⊆-trans xs⊆ys ys⊆zs = {!!}
+
+------------------------------------------------------------------------
 -- Propositions as types (Sicard-Ramírez 2011)
 ------------------------------------------------------------------------
 
