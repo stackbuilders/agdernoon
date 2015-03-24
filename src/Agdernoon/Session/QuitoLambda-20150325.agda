@@ -110,10 +110,33 @@ module Nat where
     odd zero    = false
     odd (suc n) = even n
 
+  infix  4 _≤_ _<_ _≥_ _>_
+
+  data _≤_ : ℕ → ℕ → Set where
+    z≤n : ∀ {n} → zero ≤ n
+    s≤s : ∀ {m n} (m≤n : m ≤ n) → suc m ≤ suc n
+
+  _<_ : ℕ → ℕ → Set
+  m < n = suc m ≤ n
+
+  _≥_ : ℕ → ℕ → Set
+  m ≥ n = n ≤ m
+
+  _>_ : ℕ → ℕ → Set
+  m > n = n < m
+
+  ≤-refl : ∀ n → n ≤ n
+  ≤-refl zero    = z≤n
+  ≤-refl (suc n) = s≤s (≤-refl n)
+
+  ≤-trans : ∀ {m n o} → m ≤ n → n ≤ o → m ≤ o
+  ≤-trans z≤n       _         = z≤n
+  ≤-trans (s≤s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
+
 ------------------------------------------------------------------------
 -- Lists
 ------------------------------------------------------------------------
-
+import Data.List
 module List where
 
   infixr 5 _∷_ _++_
@@ -125,6 +148,12 @@ module List where
   _++_ : ∀ {A} → List A → List A → List A
   []       ++ ys = ys
   (x ∷ xs) ++ ys = x ∷ xs ++ ys
+
+  open Bool
+
+  null : ∀ {A} → List A → Bool
+  null []      = true
+  null (_ ∷ _) = false
 
   -- Example. Define the map function:
 
@@ -139,9 +168,19 @@ module List where
   foldl _ n []       = n
   foldl c n (x ∷ xs) = foldl c (c n x) xs
 
-  -- Exercise. Define the filter function:
+  open Nat
 
-  open Bool
+  take : ∀ {A} → ℕ → List A → List A
+  take zero    _        = []
+  take (suc _) []       = []
+  take (suc n) (x ∷ xs) = x ∷ take n xs
+
+  drop : ∀ {A} → ℕ → List A → List A
+  drop zero    xs       = xs
+  drop (suc _) []       = []
+  drop (suc n) (_ ∷ xs) = drop n xs
+
+  -- Exercise. Define the filter function:
 
   filter : ∀ {A} → (A → Bool) → List A → List A
   filter = {!!}
