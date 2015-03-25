@@ -136,7 +136,7 @@ module Nat where
 ------------------------------------------------------------------------
 -- Lists
 ------------------------------------------------------------------------
-import Data.List
+
 module List where
 
   infixr 5 _∷_ _++_
@@ -282,6 +282,8 @@ module Vec where
 -- (Norell 2009, § 2.6)
 ------------------------------------------------------------------------
 
+{-
+
 module Sublist where
 
   open import Agdernoon.Data.Bool
@@ -334,6 +336,8 @@ module Sublist where
 
   ⊆-trans : ∀ {A} {xs ys zs : List A} → xs ⊆ ys → ys ⊆ zs → xs ⊆ zs
   ⊆-trans xs⊆ys ys⊆zs = {!!}
+
+-}
 
 ------------------------------------------------------------------------
 -- Propositions as types (Sicard-Ramírez 2011)
@@ -437,7 +441,7 @@ module PropositionsAsTypes where
 -- Equational reasoning
 ------------------------------------------------------------------------
 
-import Data.Nat.Properties.Simple
+{-
 
 module EquationalReasoning where
 
@@ -501,3 +505,5 @@ module EquationalReasoning where
 
   *-comm : ∀ m n → m * n ≡ n * m
   *-comm m n = {!!}
+
+-}
